@@ -9,8 +9,6 @@ from ConfigParser import ConfigParser
 my_config = ConfigParser()
 my_config.read('config.ini')
 
-address = my_config.get('database', 'address')
-mysql_engine = create_engine(address)
 Base = declarative_base()
 
 
@@ -35,3 +33,8 @@ class Server(Base):
     user = Column(Unicode(64), nullable=False)
     password = Column(Unicode(64), nullable=True)
     last_login_time = Column(DateTime, nullable=True, default=datetime.now, onupdate=datetime.now)
+
+if __name__ == '__main__':
+    address = my_config.get('database', 'address')
+    mysql_engine = create_engine(address)
+    Base.metadata.create_all(mysql_engine)
