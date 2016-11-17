@@ -10,14 +10,17 @@ from data import ClientData
 from utils import check_ip, check_port
 
 
-class SSHHandler(tornado.web.RequestHandler):
+class LoginHandler(tornado.web.RequestHandler):
+    def get(self, *args, **kwargs):
+        self.render('login.html')
 
-    def get(self):
-        self.render("index.html")
+
+class SSHHandler(tornado.web.RequestHandler):
+    def get(self, *args, **kwargs):
+        self.render('ssh.html')
 
 
 class WSHandler(tornado.websocket.WebSocketHandler):
-
     clients = dict()
 
     def get_client(self):
