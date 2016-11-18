@@ -24,3 +24,31 @@ Traceback (most recent call last):
   File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/tornado/escape.py", line 198, in utf8
     "Expected bytes, unicode, or None; got %r" % type(value)
 TypeError: Expected bytes, unicode, or None; got <type 'long'>
+2016-11-18 09:46:24,843 - mylog - ERROR - post -'user_id' is an invalid keyword argument for Server
+Traceback (most recent call last):
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp/views.py", line 156, in post
+    server = models.Server(**server_info)
+  File "<string>", line 4, in __init__
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/orm/state.py", line 414, in _initialize_instance
+    manager.dispatch.init_failure(self, args, kwargs)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/util/langhelpers.py", line 60, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/orm/state.py", line 411, in _initialize_instance
+    return manager.original_init(*mixed[1:], **kwargs)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/ext/declarative/base.py", line 649, in _declarative_constructor
+    (k, cls_.__name__))
+TypeError: 'user_id' is an invalid keyword argument for Server
+2016-11-18 09:47:46,846 - mylog - ERROR - post -'user_id' is an invalid keyword argument for Server
+Traceback (most recent call last):
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp/views.py", line 156, in post
+    server = models.Server(**server_info)
+  File "<string>", line 4, in __init__
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/orm/state.py", line 414, in _initialize_instance
+    manager.dispatch.init_failure(self, args, kwargs)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/util/langhelpers.py", line 60, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/orm/state.py", line 411, in _initialize_instance
+    return manager.original_init(*mixed[1:], **kwargs)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/ext/declarative/base.py", line 649, in _declarative_constructor
+    (k, cls_.__name__))
+TypeError: 'user_id' is an invalid keyword argument for Server

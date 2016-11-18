@@ -35,7 +35,7 @@ class Server(Base):
     __table_args__ = {'mysql_charset': 'utf8', 'mysql_engine': 'InnoDB'}
 
     id = Column(BigInteger, Sequence('server_id_seq'), primary_key=True)
-    id_user = Column(ForeignKey('user.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    user_id = Column(ForeignKey('user.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     server = Column(Unicode(64), nullable=True, default='My Server')
     host = Column(Unicode(64), nullable=False)
     port = Column(Integer, nullable=False, default=22)

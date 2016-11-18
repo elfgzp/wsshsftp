@@ -126,20 +126,21 @@ class ServerHandler(BaseHandler):
     def post(self, *args, **kwargs):
         db_session = models.create_db_session()
         server_id = self.get_argument('server_id', None)
-        server_name = self.get_argument('server_name', 'My Server'),
-        host = self.get_argument('host'),
-        port = int(self.get_argument('port', 22)),
-        username = self.get_argument('username'),
-        password = self.get_argument('password'),
+        server_name = self.get_argument('server_name', 'My Server')
+        host = self.get_argument('host')
+        port = int(self.get_argument('port', 22))
+        username = self.get_argument('username')
+        password = self.get_argument('password')
         user_id = int(self.get_current_user_id())
         if server_id:
             if user_id:
                 try:
                     server = db_session.query(models.Server).filter(id=int(server_id)).first()
-                    if server.id_user == int(user_id):
-                        server.server = server_name
-                        server.host = host
-                        server.port = port
+                    if server.user_id == int(user_id):
+                        server_info = dict(server=server_name, host=host, port=port,
+                                           username=username, password=password)
+                        server.edit(**server_info)
+                        db_session.commit()
                     else:
                         pass
                 except Exception as e:
