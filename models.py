@@ -36,19 +36,12 @@ class Server(Base):
 
     id = Column(BigInteger, Sequence('server_id_seq'), primary_key=True)
     user_id = Column(ForeignKey('user.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
-    server = Column(Unicode(64), nullable=True, default='My Server')
+    server_name = Column(Unicode(64), nullable=True, default='My Server')
     host = Column(Unicode(64), nullable=False)
     port = Column(Integer, nullable=False, default=22)
     username = Column(Unicode(64), nullable=False)
     password = Column(Unicode(64), nullable=True)
-    last_login_time = Column(DateTime, nullable=True, default=datetime.now, onupdate=datetime.now)
-
-    def edit(self, **kwargs):
-        self.server = kwargs.get('server', self.server)
-        self.host = kwargs.get('host', self.host)
-        self.port = kwargs.get('port', self.port)
-        self.username = kwargs.get('username', self.username)
-        self.password = kwargs.get('password', self.password)
+    last_login_time = Column(DateTime, nullable=True, default=None)
 
 if __name__ == '__main__':
     Base.metadata.create_all(mysql_engine)

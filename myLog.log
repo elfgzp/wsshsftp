@@ -52,3 +52,36 @@ Traceback (most recent call last):
   File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/ext/declarative/base.py", line 649, in _declarative_constructor
     (k, cls_.__name__))
 TypeError: 'user_id' is an invalid keyword argument for Server
+2016-11-18 21:23:55,589 - mylog - ERROR - post -'server' is an invalid keyword argument for Server
+Traceback (most recent call last):
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp/views.py", line 170, in post
+    server = models.Server(**server_info)
+  File "<string>", line 4, in __init__
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/orm/state.py", line 414, in _initialize_instance
+    manager.dispatch.init_failure(self, args, kwargs)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/util/langhelpers.py", line 60, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/orm/state.py", line 411, in _initialize_instance
+    return manager.original_init(*mixed[1:], **kwargs)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/ext/declarative/base.py", line 649, in _declarative_constructor
+    (k, cls_.__name__))
+TypeError: 'server' is an invalid keyword argument for Server
+2016-11-18 21:31:20,261 - mylog - ERROR - post -filter() got an unexpected keyword argument 'id'
+Traceback (most recent call last):
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp/views.py", line 146, in post
+    server = db_session.query(models.Server).filter(id=int(server_id)).first()
+TypeError: filter() got an unexpected keyword argument 'id'
+2016-11-18 21:41:59,048 - mylog - ERROR - post -commit() takes exactly 1 argument (2 given)
+Traceback (most recent call last):
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp/views.py", line 166, in post
+    db_session.commit(server)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/orm/scoping.py", line 157, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+TypeError: commit() takes exactly 1 argument (2 given)
+2016-11-18 21:42:02,410 - mylog - ERROR - post -commit() takes exactly 1 argument (2 given)
+Traceback (most recent call last):
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp/views.py", line 166, in post
+    db_session.commit(server)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/sqlalchemy/orm/scoping.py", line 157, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+TypeError: commit() takes exactly 1 argument (2 given)

@@ -100,7 +100,16 @@ class IndexHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
-        self.render('index.html', user=self.current_user)
+        user_id = int(self.get_current_user_id())
+        db_session = models.create_db_session()
+        server_list = None
+        try:
+            server_list = db_session.query(models.Server).filter(models.Server.user_id == user_id)
+        except Exception as e:
+            my_log.exception(e)
+        finally:
+            db_session.close()
+        self.render('index.html', server_list=server_list)
 
 
 class ServerHandler(BaseHandler):
@@ -109,18 +118,32 @@ class ServerHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
-        server_id = self.get_argument('server_id', None)
-        if server_id:
-            parameter = {
-                'operation': 1,
-                'server_id': server_id
-            }
+        delete = self.get_argument('delete', None)
+        if delete:
+            delete = int(delete)
+            db_session = models.create_db_session()
+            try:
+                server = db_session.query(models.Server).filter(models.Server.id == delete).first()
+                if server.user_id == int(self.get_current_user_id()):
+                    db_session.delete(server)
+                    db_session.commit()
+            except Exception as e:
+                my_log.exception(e)
+            finally:
+                db_session.close()
+                self.redirect('/')
         else:
+            server_id = self.get_argument('server_id', None)
+            server_name = self.get_argument('server_name', None)
+            host = self.get_argument('host', None)
+            port = self.get_argument('port', None)
             parameter = {
-                'operation': 0,
-                'server_id': server_id
+                'server_id': server_id,
+                'server_name': server_name,
+                'host': host,
+                'port': port
             }
-        self.render('server.html', **parameter)
+            self.render('server.html', **parameter)
 
     @tornado.web.authenticated
     def post(self, *args, **kwargs):
@@ -135,11 +158,15 @@ class ServerHandler(BaseHandler):
         if server_id:
             if user_id:
                 try:
-                    server = db_session.query(models.Server).filter(id=int(server_id)).first()
+                    server = db_session.query(models.Server).filter(models.Server.id == int(server_id)).first()
                     if server.user_id == int(user_id):
-                        server_info = dict(server=server_name, host=host, port=port,
+                        server_info = dict(server_name=server_name, host=host, port=port,
                                            username=username, password=password)
-                        server.edit(**server_info)
+                        server.server_name = server_name
+                        server.host = host
+                        server.port = port
+                        server.username = username
+                        server.password = password
                         db_session.commit()
                     else:
                         pass
@@ -147,11 +174,12 @@ class ServerHandler(BaseHandler):
                     my_log.exception(e)
                 finally:
                     db_session.close()
+                    self.redirect('/')
             else:
                 pass
         else:
             try:
-                server_info = dict(server=server_name, host=host, port=port,
+                server_info = dict(server_name=server_name, host=host, port=port,
                                    username=username, password=password, user_id=user_id)
                 server = models.Server(**server_info)
                 db_session.add(server)
@@ -160,6 +188,7 @@ class ServerHandler(BaseHandler):
                 my_log.exception(e)
             finally:
                 db_session.close()
+                self.redirect('/')
 
 
 class SSHHandler(BaseHandler):
@@ -167,14 +196,30 @@ class SSHHandler(BaseHandler):
         pass
 
     def get(self, *args, **kwargs):
-        self.render('ssh.html')
+        server_id = self.get_argument('server_id')
+        server_info = {}
+        if server_id:
+            db_session = models.create_db_session()
+            try:
+                server = db_session.query(models.Server).filter(models.Server.id == int(server_id)).first()
+                if server and server.user_id == int(self.get_current_user_id()):
+                    server_info = dict(host=server.host,
+                                       port=server.port,
+                                       username=server.username,
+                                       password=server.password)
+                    self.render('ssh.html', **server_info)
+                else:
+                    self.redirect('/')
+            except Exception as e:
+                my_log.exception(e)
+            finally:
+                db_session.close()
+        else:
+            self.redirect('/')
 
 
 class WSHandler(tornado.websocket.WebSocketHandler):
     clients = dict()
-
-    def data_received(self, chunk):
-        pass
 
     def get_client(self):
         return self.clients.get(self._id(), None)

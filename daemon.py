@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import paramiko
 from paramiko.ssh_exception import AuthenticationException, SSHException
 from tornado.websocket import WebSocketClosedError
