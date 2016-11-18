@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from views import SSHHandler, WSHandler
+import views
 
 urls = [
-    (r'/ssh', SSHHandler),
-    (r'/ws', WSHandler)
+    (r'/', views.IndexHandler),
+    (r'/index', views.IndexHandler),
+    (r'/login', views.LoginHandler),
+    (r'/logout', views.LogoutHandler),
+    (r'/signup', views.SignupHandler),
+    (r'/server', views.ServerHandler),
+    (r'/ssh', views.SSHHandler),
+    (r'/ws', views.WSHandler)
 ]

@@ -35,33 +35,34 @@
 				<div class="login-wrapper">
 			        <div class="box">
 			            <div class="content-wrap">
-			                <h6>Sign In</h6>
-							{% if status == 1 %}
-                                <p>Password error !</p>
+			                <h6>Sign Up</h6>
+                            {% if status == 1 %}
+                                <p>Sign up success !</p>
                             {% elif status == 2 %}
-                                <p>User not existed !</p>
+                                <p>Sign up failed, user was existed !</p>
                             {% end %}
-			                <form name="login-form" method="post" action="login">
-								{% raw xsrf_form_html() %}
+			                <form name="signup-form" method="post" action="signup" onsubmit="return check(this)">
+                                {% raw xsrf_form_html() %}
 								<input name="email" class="form-control" required=required type="email" placeholder="E-mail address">
-								<input name="password" class="form-control" required=required type="password" placeholder="Password">
-								<div class="action">
-									<button type="submit" class="btn btn-primary signup" >Login</button>
-								</div>
+								<input name="password" class="form-control" required=required minlength="6" maxlength="13" type="password" placeholder="Password">
+								<input name="password_repeat" class="form-control" required=required minlength="6" maxlength="13" type="password" placeholder="Confirm Password">
+									<div class="action">
+										<button type="submit" class="btn btn-primary signup">Sign Up</button>
+									</div>
 							</form>
 			            </div>
 			        </div>
 
 			        <div class="already">
-			            <p>Don't have an account yet?</p>
-			            <a href="signup">Sign Up</a>
+			            <p>Have an account already?</p>
+			            <a href="login">Login</a>
 			        </div>
 			    </div>
 			</div>
 		</div>
 	</div>
 
-	<footer>
+    <footer>
          <div class="container">
 
             <div class="copy text-center">
@@ -76,5 +77,26 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../static/js/bootstrap.min.js"></script>
     <script src="../static/js/custom.js"></script>
+    <script>
+        function check(form) {
+            var p1 = form.password;
+            var p2 = form.password_repeat;
+            if (p1.value != p2.value) {
+                p2.oninvalid();
+                return false;
+            }
+            return true;
+        }
+        onload = function() {
+            var p2 = document.forms["signup-form"].password_repeat;
+            p2.oninvalid = function() {
+                this.setCustomValidity("密码不一致，请重新输入");
+            }
+            p2.oninput = function() {
+                this.setCustomValidity("");
+            }
+
+        }
+    </script>
   </body>
 </html>

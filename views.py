@@ -1,27 +1,179 @@
 # -*- coding:utf-8 -*-
 
+import logging.config
 import logging
-
 import tornado.web
 import tornado.websocket
-
+import hashlib
 from daemon import Bridge
 from data import ClientData
 from utils import check_ip, check_port
+import models
+
+logging.config.fileConfig('config.ini')
+my_log = logging.getLogger('mylog')
 
 
-class LoginHandler(tornado.web.RequestHandler):
+class BaseHandler(tornado.web.RequestHandler):
+    def data_received(self, chunk):
+        pass
+
+    def get_current_user(self):
+        return self.get_secure_cookie('user')
+
+    def get_current_user_id(self):
+        return self.get_secure_cookie('user_id')
+
+
+class LoginHandler(BaseHandler):
+    def data_received(self, chunk):
+        pass
+
     def get(self, *args, **kwargs):
-        self.render('login.html')
+        self.render('login.html', status=0)
+
+    def post(self, *args, **kwargs):
+        email = self.get_argument('email')
+        password = self.get_argument('password')
+        db_session = models.create_db_session()
+        try:
+            user = db_session.query(models.User).filter(models.User.email == email).first()
+            if user:
+                md5 = hashlib.md5()
+                md5.update(password)
+                password = md5.hexdigest()
+                if password == user.password:
+                    self.set_secure_cookie('user', email)
+                    self.set_secure_cookie('user_id', str(user.id))
+                    self.redirect('/')
+                else:
+                    self.render('login.html', status=1)
+            else:
+                self.render('login.html', status=2)
+        except Exception as e:
+            my_log.exception(e)
+        finally:
+            db_session.close()
 
 
-class SSHHandler(tornado.web.RequestHandler):
+class LogoutHandler(BaseHandler):
+    def data_received(self, chunk):
+        pass
+
+    def get(self, *args, **kwargs):
+        self.clear_cookie('user')
+        self.redirect('/')
+
+
+class SignupHandler(BaseHandler):
+    def data_received(self, chunk):
+        pass
+
+    def get(self, *args, **kwargs):
+        self.render('signup.html', status=0)
+
+    def post(self, *args, **kwargs):
+        email = self.get_argument('email')
+        password = self.get_argument('password')
+        db_session = models.create_db_session()
+        try:
+            user = db_session.query(models.User).filter(models.User.email == email).first()
+            if not user:
+                md5 = hashlib.md5()
+                md5.update(password)
+                password = md5.hexdigest()
+                user = models.User(email=email, password=password)
+                db_session.add(user)
+                db_session.commit()
+                self.render('signup.html', status=1)
+            else:
+                self.render('signup.html', status=2)
+        except Exception as e:
+            my_log.exception(e)
+        finally:
+            db_session.close()
+
+
+class IndexHandler(BaseHandler):
+    def data_received(self, chunk):
+        pass
+
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        self.render('index.html', user=self.current_user)
+
+
+class ServerHandler(BaseHandler):
+    def data_received(self, chunk):
+        pass
+
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        server_id = self.get_argument('server_id', None)
+        if server_id:
+            parameter = {
+                'operation': 1,
+                'server_id': server_id
+            }
+        else:
+            parameter = {
+                'operation': 0,
+                'server_id': server_id
+            }
+        self.render('server.html', **parameter)
+
+    @tornado.web.authenticated
+    def post(self, *args, **kwargs):
+        db_session = models.create_db_session()
+        server_id = self.get_argument('server_id', None)
+        server_name = self.get_argument('server_name', 'My Server'),
+        host = self.get_argument('host'),
+        port = int(self.get_argument('port', 22)),
+        username = self.get_argument('username'),
+        password = self.get_argument('password'),
+        user_id = int(self.get_current_user_id())
+        if server_id:
+            if user_id:
+                try:
+                    server = db_session.query(models.Server).filter(id=int(server_id)).first()
+                    if server.id_user == int(user_id):
+                        server.server = server_name
+                        server.host = host
+                        server.port = port
+                    else:
+                        pass
+                except Exception as e:
+                    my_log.exception(e)
+                finally:
+                    db_session.close()
+            else:
+                pass
+        else:
+            try:
+                server_info = dict(server=server_name, host=host, port=port,
+                                   username=username, password=password, user_id=user_id)
+                server = models.Server(**server_info)
+                db_session.add(server)
+                db_session.commit()
+            except Exception as e:
+                my_log.exception(e)
+            finally:
+                db_session.close()
+
+
+class SSHHandler(BaseHandler):
+    def data_received(self, chunk):
+        pass
+
     def get(self, *args, **kwargs):
         self.render('ssh.html')
 
 
 class WSHandler(tornado.websocket.WebSocketHandler):
     clients = dict()
+
+    def data_received(self, chunk):
+        pass
 
     def get_client(self):
         return self.clients.get(self._id(), None)

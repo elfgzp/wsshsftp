@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web SSH SFTP Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- styles -->
+    <link href="../static/css/styles.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="login-bg">
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Logo -->
+                <div class="logo">
+                    <h1 style="color: #ffffff;">Web SSH SFTP Admin</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content container">
+    <div class="row">
+        <div class="col-md-2 col-md-offset-1">
+            <div class="sidebar content-box" style="display: block;">
+                <ul class="nav">
+                    <!-- Main menu -->
+                    <li><a href="index"><i class="glyphicon glyphicon-home"></i> Server List</a></li>
+                    <li><a href="help"><i class="glyphicon glyphicon-question-sign"></i> Help</a></li>
+                    <li class="submenu">
+                        <a href="#">
+                            <i class="glyphicon glyphicon-user"></i> My Account
+                            <span class="caret pull-right"></span>
+                        </a>
+                        <!-- Sub menu -->
+                        <ul>
+                            <li><a href="profile">Profile</a></li>
+                            <li><a href="logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="content-box-large">
+                <div class="panel-heading">
+                    {% if operation == 0 %}
+                    <div class="panel-title">New Server</div>
+                    {% else %}
+                    <div class="panel-title">Edit Server</div>
+                    {% end %}
+                </div>
+                <div class="panel-body">
+                    <form name="server-form" method="post" action="server" class="form-horizontal" role="form"
+                          onsubmit="return check(this)">
+                        {% raw xsrf_form_html() %}
+                        {% if server_id %}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Server id</label>
+                            <div class="col-sm-10">
+                                <span class="form-control">{{ server_id }}</span>
+                            </div>
+                        </div>
+                        {% end %}
+                        <div class="form-group">
+                            <label for="server_name" class="col-sm-2 control-label">Server Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="server_name" name="server_name"
+                                       placeholder="Server Name"
+                                       value="My Server">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="host" class="col-sm-2 control-label">Host</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="host" name="host" placeholder="Host">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="port" name="port" placeholder="Port"
+                                       value="22">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">Username</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="username" name="username"
+                                       placeholder="Username"
+                                       required=required value="root">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-2 control-label">Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="password" name="password"
+                                       placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary"><i
+                                        class="glyphicon glyphicon-floppy-disk"></i> Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+
+        <div class="copy text-center">
+            Copyright 2016 develop by Gzp
+        </div>
+
+    </div>
+</footer>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/custom.js"></script>
+<script>
+    function isIP(ip) {
+        var re = /^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/
+        return re.test(ip);
+    }
+    function isDomain(domain) {
+        var re = /[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)+/
+        return re.test(domain)
+    }
+    function isNum(port) {
+        var re = /\d+/
+        return re.test(port)
+    }
+    function check(form) {
+        var host = form.host;
+        var port = form.port;
+        var is_valid = true
+        if (isIP(host.value)) {
+        } else if (isDomain(host.value)) {
+        } else {
+            host.oninvalid();
+            is_valid = false
+        }
+        if (isNum(port.value)) {
+        } else {
+            port.oninvalid()
+            is_valid = false
+        }
+        return is_valid
+    }
+    onload = function () {
+        var host = document.forms["server-form"].host;
+        var port = document.forms["server-form"].port;
+
+        host.oninvalid = function () {
+            this.setCustomValidity("服务器ip地址或域名有误!");
+        }
+        host.oninput = function () {
+            this.setCustomValidity("");
+        }
+        port.oninvalid = function () {
+            this.setCustomValidity("端口有误!");
+        }
+        port.oninput = function () {
+            this.setCustomValidity("");
+        }
+
+    }
+</script>
+</body>
+</html>

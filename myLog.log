@@ -1,0 +1,26 @@
+2016-11-18 09:14:46,619 - mylog - ERROR - post -Expected bytes, unicode, or None; got <type 'long'>
+Traceback (most recent call last):
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp/views.py", line 47, in post
+    self.set_secure_cookie('user_id', user.id)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/tornado/web.py", line 613, in set_secure_cookie
+    version=version),
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/tornado/web.py", line 637, in create_signed_value
+    key_version=key_version)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/tornado/web.py", line 3110, in create_signed_value
+    value = base64.b64encode(utf8(value))
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/tornado/escape.py", line 198, in utf8
+    "Expected bytes, unicode, or None; got %r" % type(value)
+TypeError: Expected bytes, unicode, or None; got <type 'long'>
+2016-11-18 09:14:53,318 - mylog - ERROR - post -Expected bytes, unicode, or None; got <type 'long'>
+Traceback (most recent call last):
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp/views.py", line 47, in post
+    self.set_secure_cookie('user_id', user.id)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/tornado/web.py", line 613, in set_secure_cookie
+    version=version),
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/tornado/web.py", line 637, in create_signed_value
+    key_version=key_version)
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/tornado/web.py", line 3110, in create_signed_value
+    value = base64.b64encode(utf8(value))
+  File "/Users/Gzp/Desktop/Python_code/wsshsftp_venv/lib/python2.7/site-packages/tornado/escape.py", line 198, in utf8
+    "Expected bytes, unicode, or None; got %r" % type(value)
+TypeError: Expected bytes, unicode, or None; got <type 'long'>
