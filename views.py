@@ -218,6 +218,11 @@ class SSHHandler(BaseHandler):
             self.redirect('/')
 
 
+class SFTPHandler(BaseHandler):
+    def get(self, *args, **kwargs):
+        self.render('sftp.html')
+
+
 class WSHandler(tornado.websocket.WebSocketHandler):
     clients = dict()
 

@@ -10,5 +10,6 @@ urls = [
     (r'/signup', views.SignupHandler),
     (r'/server', views.ServerHandler),
     (r'/ssh', views.SSHHandler),
+    (r'/sftp', views.SFTPHandler),
     (r'/ws', views.WSHandler)
 ]
