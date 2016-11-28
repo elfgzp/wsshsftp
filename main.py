@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import tornado.web
 import tornado.ioloop
 from urls import urls
 from settings import settings

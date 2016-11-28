@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Web SSH SFTP Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
@@ -11,70 +11,72 @@
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-  </head>
-  <body class="login-bg">
-  	<div class="header">
-	     <div class="container">
-	        <div class="row">
-	           <div class="col-md-12">
-	              <!-- Logo -->
-	              <div class="logo">
+</head>
+<body class="login-bg">
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Logo -->
+                <div class="logo">
                     <h1><a href="index">Web SSH SFTP Admin</a></h1>
-	              </div>
-	           </div>
-	        </div>
-	     </div>
-	</div>
-
-	<div class="page-content container">
-		<div class="row">
-			<div class="col-md-4 col-md-offset-4">
-				<div class="login-wrapper">
-			        <div class="box">
-			            <div class="content-wrap">
-			                <h6>Sign In</h6>
-							{% if status == 1 %}
-                                <p>Password error !</p>
-                            {% elif status == 2 %}
-                                <p>User not existed !</p>
-                            {% end %}
-			                <form name="login-form" method="post" action="login">
-								{% raw xsrf_form_html() %}
-								<input name="email" class="form-control" required=required type="email" placeholder="E-mail address">
-								<input name="password" class="form-control" required=required type="password" placeholder="Password">
-								<div class="action">
-									<button type="submit" class="btn btn-primary signup" >Login</button>
-								</div>
-							</form>
-			            </div>
-			        </div>
-
-			        <div class="already">
-			            <p>Don't have an account yet?</p>
-			            <a href="signup">Sign Up</a>
-			        </div>
-			    </div>
-			</div>
-		</div>
-	</div>
-
-	<footer>
-         <div class="container">
-
-            <div class="copy text-center">
-               Copyright 2016 develop by Gzp
+                </div>
             </div>
+        </div>
+    </div>
+</div>
 
-         </div>
-      </footer>
+<div class="page-content container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-wrapper">
+                <div class="box">
+                    <div class="content-wrap">
+                        <h6>Sign In</h6>
+                        {% if status == 1 %}
+                        <p>Password error !</p>
+                        {% elif status == 2 %}
+                        <p>User not existed !</p>
+                        {% end %}
+                        <form name="login-form" method="post" action="login">
+                            {% raw xsrf_form_html() %}
+                            <input name="email" class="form-control" required=required type="email"
+                                   placeholder="E-mail address">
+                            <input name="password" class="form-control" required=required type="password"
+                                   placeholder="Password">
+                            <div class="action">
+                                <button type="submit" class="btn btn-primary signup">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../static/js/bootstrap.min.js"></script>
-    <script src="../static/js/custom.js"></script>
-  </body>
+                <div class="already">
+                    <p>Don't have an account yet?</p>
+                    <a href="signup">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/custom.js"></script>
+<footer>
+    <div class="container">
+
+        <div class="copy text-center">
+            Copyright 2016 develop by Gzp
+        </div>
+
+    </div>
+</footer>
+</body>
 </html>

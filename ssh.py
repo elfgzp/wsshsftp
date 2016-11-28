@@ -7,7 +7,7 @@ from tornado.websocket import WebSocketClosedError
 from ioloop import IOLoop
 
 
-class Bridge(object):
+class SSH(object):
 
     def __init__(self, websocket):
         self._websocket = websocket

@@ -5,7 +5,7 @@ import logging
 import tornado.web
 import tornado.websocket
 import hashlib
-from daemon import Bridge
+from ssh import SSH
 from data import ClientData
 from utils import check_ip, check_port
 import models
@@ -230,8 +230,8 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         return self.clients.get(self._id(), None)
 
     def put_client(self):
-        bridge = Bridge(self)
-        self.clients[self._id()] = bridge
+        ssh = SSH(self)
+        self.clients[self._id()] = ssh
 
     def remove_client(self):
         bridge = self.get_client()

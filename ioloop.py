@@ -3,7 +3,6 @@
 import select
 import socket
 import errno
-import logging
 from threading import Thread
 from utils import Platform
 
